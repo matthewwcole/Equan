@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { BreathingTechnique } from '@shared/schema';
 import { Header } from '@/components/header';
@@ -7,6 +7,7 @@ import { BreathingVisualization } from '@/components/breathing-visualization';
 import { SessionStats } from '@/components/session-stats';
 import { Card, CardContent } from '@/components/ui/card';
 import { AlertCircle } from 'lucide-react';
+import { AudioSettings } from '@/components/audio-settings';
 
 export default function Home() {
   const [selectedTechnique, setSelectedTechnique] = useState<BreathingTechnique | null>(null);
@@ -16,11 +17,11 @@ export default function Home() {
   });
 
   // Auto-select first technique when data loads
-  useState(() => {
+  useEffect(() => {
     if (techniques && techniques.length > 0 && !selectedTechnique) {
       setSelectedTechnique(techniques[0]);
     }
-  });
+  }, [techniques, selectedTechnique]);
 
   if (isLoading) {
     return (
@@ -68,7 +69,10 @@ export default function Home() {
             onTechniqueChange={setSelectedTechnique}
           />
           
-          <SessionStats />
+          <div className="space-y-6">
+            <SessionStats />
+            <AudioSettings />
+          </div>
         </div>
 
         {/* Instructions Section */}

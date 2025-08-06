@@ -1,0 +1,429 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breathe - Mindful Breathing App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4A90E2',
+                        secondary: '#7ED321',
+                        accent: '#BD10E0',
+                        calm: '#F8FAFC'
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif']
+                    },
+                    animation: {
+                        'breathe-in': 'breatheIn 4s ease-in-out infinite',
+                        'breathe-out': 'breatheOut 4s ease-in-out infinite',
+                        'box-breathe': 'boxBreathe 16s ease-in-out infinite',
+                        'triangle-breathe': 'triangleBreathe 12s ease-in-out infinite'
+                    }
+                }
+            }
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        @keyframes breatheIn {
+            0%, 50% { transform: scale(1); }
+            25% { transform: scale(1.3); }
+        }
+        
+        @keyframes boxBreathe {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.4); }
+            50% { transform: scale(1.4); }
+            75% { transform: scale(1); }
+        }
+        
+        @keyframes triangleBreathe {
+            0%, 100% { transform: scale(1); }
+            33% { transform: scale(1.3); }
+            66% { transform: scale(1); }
+        }
+        
+        .breathing-circle {
+            background: radial-gradient(circle, rgba(74, 144, 226, 0.3) 0%, rgba(74, 144, 226, 0.1) 40%, rgba(74, 144, 226, 0.05) 100%);
+            border: 3px solid rgba(74, 144, 226, 0.4);
+        }
+        
+        .technique-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .active-technique {
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(74, 144, 226, 0.05) 100%);
+            border-color: #4A90E2;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-calm via-blue-50 to-green-50 min-h-screen font-inter">
+    
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                        <i class="fas fa-wind text-white text-lg"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-800">Breathe</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 text-gray-600 hover:text-primary transition-colors">
+                        <i class="fas fa-cog text-xl"></i>
+                    </button>
+                    <button class="p-2 text-gray-600 hover:text-primary transition-colors">
+                        <i class="fas fa-user-circle text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        
+        <!-- Breathing Techniques Selection -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Choose Your Breathing Technique</h2>
+            
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <!-- @COMPONENT: TechniqueCard [technique, isActive, onClick] -->
+                <div class="technique-card active-technique rounded-2xl p-6 cursor-pointer transition-all duration-300 hover:shadow-lg" data-technique="box" data-mock="true">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-square text-primary text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800">Box Breathing</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">Equal counts for inhale, hold, exhale, and hold. Perfect for stress reduction and focus enhancement.</p>
+                    <div class="text-xs text-primary font-medium">4-4-4-4 Pattern</div>
+                </div>
+                
+                <div class="technique-card rounded-2xl p-6 cursor-pointer transition-all duration-300 hover:shadow-lg" data-technique="4-7-8" data-mock="true">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-secondary/20 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-moon text-secondary text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800">4-7-8 Breathing</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">Inhale for 4, hold for 7, exhale for 8. Excellent for relaxation and preparing for sleep.</p>
+                    <div class="text-xs text-secondary font-medium">4-7-8 Pattern</div>
+                </div>
+                
+                <div class="technique-card rounded-2xl p-6 cursor-pointer transition-all duration-300 hover:shadow-lg" data-technique="triangle" data-mock="true">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-play text-accent text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800">Triangle Breathing</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">Simple inhale, hold, exhale pattern. Great for beginners and quick stress relief.</p>
+                    <div class="text-xs text-accent font-medium">4-4-4 Pattern</div>
+                </div>
+                <!-- @END_COMPONENT: TechniqueCard -->
+            </div>
+        </section>
+
+        <!-- Breathing Exercise Interface -->
+        <section class="text-center">
+            <!-- Session Stats -->
+            <div class="grid grid-cols-3 gap-4 mb-8 max-w-md mx-auto">
+                <div class="bg-white/60 backdrop-blur rounded-xl p-4">
+                    <div class="text-2xl font-bold text-primary" data-bind="currentSession">0</div>
+                    <div class="text-xs text-gray-600 font-medium">Current</div>
+                </div>
+                <div class="bg-white/60 backdrop-blur rounded-xl p-4">
+                    <div class="text-2xl font-bold text-secondary" data-bind="totalSessions">12</div>
+                    <div class="text-xs text-gray-600 font-medium">Total</div>
+                </div>
+                <div class="bg-white/60 backdrop-blur rounded-xl p-4">
+                    <div class="text-2xl font-bold text-accent" data-bind="streak">3</div>
+                    <div class="text-xs text-gray-600 font-medium">Streak</div>
+                </div>
+            </div>
+
+            <!-- Breathing Circle -->
+            <!-- @COMPONENT: BreathingCircle [technique, isActive, currentPhase] -->
+            <div class="relative mb-8">
+                <div class="breathing-circle w-80 h-80 mx-auto rounded-full flex items-center justify-center relative animate-breathe-in" id="breathing-circle" data-mock="true">
+                    <div class="absolute inset-8 bg-white/40 rounded-full flex items-center justify-center">
+                        <div class="text-center">
+                            <div class="text-4xl font-light text-gray-700 mb-2" id="phase-text" data-bind="currentPhase">Inhale</div>
+                            <div class="text-6xl font-bold text-primary" id="count-text" data-bind="currentCount">4</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Progress Ring -->
+                <div class="absolute inset-0 w-80 h-80 mx-auto">
+                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(74, 144, 226, 0.2)" stroke-width="2"/>
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="#4A90E2" stroke-width="2" 
+                                stroke-dasharray="283" stroke-dashoffset="141" class="transition-all duration-1000" id="progress-circle"/>
+                    </svg>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: BreathingCircle -->
+
+            <!-- Instructions -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2" data-bind="currentTechniqueName">Box Breathing</h3>
+                <p class="text-gray-600 max-w-md mx-auto" data-bind="currentInstructions" data-mock="true">
+                    Breathe in for 4 seconds, hold for 4 seconds, breathe out for 4 seconds, then hold for 4 seconds.
+                </p>
+            </div>
+
+            <!-- Controls -->
+            <!-- @COMPONENT: BreathingControls [isPlaying, onPlayPause, onReset] -->
+            <div class="flex items-center justify-center space-x-6 mb-8">
+                <button class="w-16 h-16 bg-gray-200 hover:bg-gray-300 rounded-full flex items-center justify-center transition-colors" data-event="click:resetSession" data-mock="true">
+                    <i class="fas fa-redo text-gray-600 text-xl"></i>
+                </button>
+                
+                <button class="w-20 h-20 bg-primary hover:bg-blue-600 rounded-full flex items-center justify-center transition-all duration-200 transform hover:scale-105 shadow-lg" 
+                        id="play-pause-btn" data-event="click:togglePlayPause" data-mock="true">
+                    <i class="fas fa-play text-white text-2xl ml-1" id="play-icon"></i>
+                    <i class="fas fa-pause text-white text-2xl hidden" id="pause-icon"></i>
+                </button>
+                
+                <button class="w-16 h-16 bg-gray-200 hover:bg-gray-300 rounded-full flex items-center justify-center transition-colors" data-event="click:openSettings" data-mock="true">
+                    <i class="fas fa-sliders-h text-gray-600 text-xl"></i>
+                </button>
+            </div>
+            <!-- @END_COMPONENT: BreathingControls -->
+
+            <!-- Timer Display -->
+            <div class="bg-white/40 backdrop-blur rounded-2xl p-6 max-w-sm mx-auto">
+                <div class="flex justify-between items-center text-sm text-gray-600 mb-2">
+                    <span>Session Time</span>
+                    <span data-bind="sessionDuration">5:00</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-primary h-2 rounded-full transition-all duration-300" style="width: 0%" id="session-progress" data-bind="sessionProgress"></div>
+                </div>
+                <div class="text-xs text-gray-500 mt-2 text-center" data-bind="completedCycles" data-mock="true">0 of 10 cycles completed</div>
+            </div>
+        </section>
+
+        <!-- Recent Sessions -->
+        <section class="mt-16">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Recent Sessions</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- @MAP: recentSessions.map(session => ( -->
+                <div class="bg-white/60 backdrop-blur rounded-xl p-4" data-mock="true">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-800">Box Breathing</span>
+                        <span class="text-xs text-gray-500">2 hours ago</span>
+                    </div>
+                    <div class="text-xl font-bold text-primary">5:00</div>
+                    <div class="text-xs text-gray-600">10 cycles completed</div>
+                </div>
+                
+                <div class="bg-white/60 backdrop-blur rounded-xl p-4" data-mock="true">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-800">4-7-8 Breathing</span>
+                        <span class="text-xs text-gray-500">Yesterday</span>
+                    </div>
+                    <div class="text-xl font-bold text-secondary">3:30</div>
+                    <div class="text-xs text-gray-600">7 cycles completed</div>
+                </div>
+                
+                <div class="bg-white/60 backdrop-blur rounded-xl p-4" data-mock="true">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-800">Triangle Breathing</span>
+                        <span class="text-xs text-gray-500">2 days ago</span>
+                    </div>
+                    <div class="text-xl font-bold text-accent">4:15</div>
+                    <div class="text-xs text-gray-600">8 cycles completed</div>
+                </div>
+                
+                <div class="bg-white/60 backdrop-blur rounded-xl p-4" data-mock="true">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-800">Box Breathing</span>
+                        <span class="text-xs text-gray-500">3 days ago</span>
+                    </div>
+                    <div class="text-xl font-bold text-primary">6:00</div>
+                    <div class="text-xs text-gray-600">12 cycles completed</div>
+                </div>
+                <!-- @END_MAP )) -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Session Complete Modal -->
+    <!-- @COMPONENT: SessionCompleteModal [isVisible, sessionData, onClose] -->
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden" id="session-modal" data-mock="true">
+        <div class="bg-white rounded-3xl p-8 max-w-md mx-4 text-center">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-check text-green-500 text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">Session Complete!</h3>
+            <p class="text-gray-600 mb-6">You completed a 5-minute Box Breathing session with 10 cycles.</p>
+            
+            <div class="grid grid-cols-3 gap-4 mb-6">
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-primary">5:00</div>
+                    <div class="text-xs text-gray-600">Duration</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-secondary">10</div>
+                    <div class="text-xs text-gray-600">Cycles</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-accent">+1</div>
+                    <div class="text-xs text-gray-600">Streak</div>
+                </div>
+            </div>
+            
+            <button class="w-full bg-primary hover:bg-blue-600 text-white font-medium py-3 rounded-xl transition-colors" 
+                    data-event="click:closeModal">Continue</button>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: SessionCompleteModal -->
+
+    <!-- Settings Panel -->
+    <!-- @COMPONENT: SettingsPanel [isVisible, settings, onSave, onClose] -->
+    <div class="fixed inset-y-0 right-0 w-80 bg-white/95 backdrop-blur-lg shadow-2xl transform translate-x-full transition-transform duration-300 z-50" id="settings-panel" data-mock="true">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-semibold text-gray-800">Settings</h3>
+                <button class="p-2 text-gray-600 hover:text-gray-800" data-event="click:closeSettings">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Session Duration</label>
+                    <select class="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent" data-bind="sessionDuration" data-mock="true">
+                        <option value="300">5 minutes</option>
+                        <option value="600">10 minutes</option>
+                        <option value="900">15 minutes</option>
+                        <option value="1200">20 minutes</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Audio Cues</label>
+                    <div class="flex items-center space-x-3">
+                        <input type="checkbox" id="audio-cues" class="w-5 h-5 text-primary" checked data-bind="audioCuesEnabled" data-mock="true">
+                        <label for="audio-cues" class="text-sm text-gray-600">Enable breathing sound cues</label>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Vibration</label>
+                    <div class="flex items-center space-x-3">
+                        <input type="checkbox" id="vibration" class="w-5 h-5 text-primary" data-bind="vibrationEnabled" data-mock="true">
+                        <label for="vibration" class="text-sm text-gray-600">Haptic feedback on mobile</label>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Theme</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button class="p-3 border-2 border-primary bg-primary/10 rounded-xl text-center text-sm font-medium" data-mock="true">Light</button>
+                        <button class="p-3 border border-gray-200 rounded-xl text-center text-sm font-medium text-gray-600" data-mock="true">Dark</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: SettingsPanel -->
+
+    <script>
+        // TODO: Implement breathing exercise state management, timer logic, and session tracking
+        // TODO: Implement audio cues and haptic feedback
+        // TODO: Implement local storage for settings and session history
+        
+        (function() {
+            // Mock interaction handlers for demonstration
+            let isPlaying = false;
+            let currentTechnique = 'box';
+            let breathingInterval;
+            
+            // Technique selection
+            document.querySelectorAll('[data-technique]').forEach(card => {
+                card.addEventListener('click', function() {
+                    // Remove active class from all cards
+                    document.querySelectorAll('.technique-card').forEach(c => {
+                        c.classList.remove('active-technique');
+                    });
+                    
+                    // Add active class to clicked card
+                    this.classList.add('active-technique');
+                    
+                    currentTechnique = this.dataset.technique;
+                    updateBreathingAnimation();
+                });
+            });
+            
+            // Play/Pause functionality
+            document.getElementById('play-pause-btn').addEventListener('click', function() {
+                isPlaying = !isPlaying;
+                
+                if (isPlaying) {
+                    document.getElementById('play-icon').classList.add('hidden');
+                    document.getElementById('pause-icon').classList.remove('hidden');
+                    startBreathing();
+                } else {
+                    document.getElementById('play-icon').classList.remove('hidden');
+                    document.getElementById('pause-icon').classList.add('hidden');
+                    stopBreathing();
+                }
+            });
+            
+            function updateBreathingAnimation() {
+                const circle = document.getElementById('breathing-circle');
+                circle.className = 'breathing-circle w-80 h-80 mx-auto rounded-full flex items-center justify-center relative';
+                
+                switch (currentTechnique) {
+                    case 'box':
+                        circle.classList.add('animate-box-breathe');
+                        break;
+                    case '4-7-8':
+                        circle.classList.add('animate-breathe-in');
+                        break;
+                    case 'triangle':
+                        circle.classList.add('animate-triangle-breathe');
+                        break;
+                }
+            }
+            
+            function startBreathing() {
+                updateBreathingAnimation();
+                // TODO: Implement actual breathing cycle logic with proper timing
+            }
+            
+            function stopBreathing() {
+                if (breathingInterval) {
+                    clearInterval(breathingInterval);
+                }
+            }
+            
+            // Settings panel toggle
+            document.querySelector('[data-event="click:openSettings"]').addEventListener('click', function() {
+                document.getElementById('settings-panel').style.transform = 'translateX(0)';
+            });
+            
+            document.querySelector('[data-event="click:closeSettings"]').addEventListener('click', function() {
+                document.getElementById('settings-panel').style.transform = 'translateX(100%)';
+            });
+            
+            // Initialize with box breathing animation
+            updateBreathingAnimation();
+        })();
+    </script>
+</body>
+</html>

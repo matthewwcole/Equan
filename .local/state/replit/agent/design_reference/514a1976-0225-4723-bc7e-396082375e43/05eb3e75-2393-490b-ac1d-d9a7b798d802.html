@@ -1,0 +1,475 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breathe - Guided Breathing Exercises</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#4A90E2',
+                        'secondary': '#7B68EE',
+                        'accent': '#50C878',
+                        'dark-bg': '#1A202C',
+                        'text-primary': '#2D3748'
+                    },
+                    animation: {
+                        'breathe-in': 'breatheIn 4s ease-in-out infinite',
+                        'breathe-box': 'breatheBox 16s ease-in-out infinite',
+                        'breathe-478': 'breathe478 19s ease-in-out infinite',
+                        'pulse-gentle': 'pulseGentle 2s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        breatheIn: {
+                            '0%, 100%': { transform: 'scale(1)', opacity: '0.8' },
+                            '50%': { transform: 'scale(1.3)', opacity: '1' }
+                        },
+                        breatheBox: {
+                            '0%': { transform: 'scale(1)', opacity: '0.8' },
+                            '25%': { transform: 'scale(1.4)', opacity: '1' },
+                            '50%': { transform: 'scale(1.4)', opacity: '1' },
+                            '75%': { transform: 'scale(1)', opacity: '0.8' },
+                            '100%': { transform: 'scale(1)', opacity: '0.8' }
+                        },
+                        breathe478: {
+                            '0%': { transform: 'scale(1)', opacity: '0.8' },
+                            '21%': { transform: 'scale(1.5)', opacity: '1' },
+                            '58%': { transform: 'scale(1.5)', opacity: '1' },
+                            '100%': { transform: 'scale(1)', opacity: '0.8' }
+                        },
+                        pulseGentle: {
+                            '0%, 100%': { opacity: '0.6' },
+                            '50%': { opacity: '1' }
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-dark-bg dark:to-gray-900 min-h-screen font-inter transition-colors duration-500">
+    
+    <!-- @COMPONENT: Header -->
+    <header class="w-full py-6 px-4 sm:px-6">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center">
+                    <i class="fas fa-wind text-white text-lg"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-text-primary dark:text-white">Breathe</h1>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <!-- Volume Control -->
+                <div class="flex items-center space-x-2 bg-white dark:bg-gray-800 rounded-full px-4 py-2 shadow-sm">
+                    <i class="fas fa-volume-up text-gray-600 dark:text-gray-300 text-sm"></i>
+                    <input type="range" min="0" max="100" value="70" data-mock="true" 
+                           class="w-20 h-1 bg-gray-300 rounded-lg appearance-none cursor-pointer slider">
+                </div>
+                
+                <!-- Dark Mode Toggle -->
+                <button class="w-10 h-10 bg-white dark:bg-gray-800 rounded-full shadow-sm flex items-center justify-center hover:shadow-md transition-all duration-200"
+                        data-event="click:toggleDarkMode" data-implementation="Toggle between light and dark themes">
+                    <i class="fas fa-moon text-gray-600 dark:text-gray-300"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: Header -->
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 pb-8">
+        
+        <!-- @COMPONENT: TechniqueSelector -->
+        <section class="mb-8">
+            <h2 class="text-lg font-semibold text-text-primary dark:text-white mb-4 text-center">Choose Your Breathing Technique</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                
+                <!-- Deep Breathing Card -->
+                <div class="technique-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-primary/30 active"
+                     data-technique="deep" data-event="click:selectTechnique">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-lungs text-white"></i>
+                        </div>
+                        <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full">4s cycle</span>
+                    </div>
+                    <h3 class="font-semibold text-text-primary dark:text-white mb-2">Deep Breathing</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Simple inhale and exhale pattern for relaxation and stress relief.</p>
+                    <div class="text-xs text-gray-500 dark:text-gray-500">Inhale 2s • Exhale 2s</div>
+                </div>
+
+                <!-- Box Breathing Card -->
+                <div class="technique-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-secondary/30"
+                     data-technique="box" data-event="click:selectTechnique">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="w-12 h-12 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-square text-white"></i>
+                        </div>
+                        <span class="text-xs bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-3 py-1 rounded-full">16s cycle</span>
+                    </div>
+                    <h3 class="font-semibold text-text-primary dark:text-white mb-2">Box Breathing</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Four-count breathing used by Navy SEALs for focus and calm.</p>
+                    <div class="text-xs text-gray-500 dark:text-gray-500">Inhale 4s • Hold 4s • Exhale 4s • Hold 4s</div>
+                </div>
+
+                <!-- 4-7-8 Breathing Card -->
+                <div class="technique-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-accent/30"
+                     data-technique="478" data-event="click:selectTechnique">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="w-12 h-12 bg-gradient-to-r from-green-400 to-green-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-bed text-white"></i>
+                        </div>
+                        <span class="text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-3 py-1 rounded-full">19s cycle</span>
+                    </div>
+                    <h3 class="font-semibold text-text-primary dark:text-white mb-2">4-7-8 Technique</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Dr. Weil's technique for anxiety relief and better sleep.</p>
+                    <div class="text-xs text-gray-500 dark:text-gray-500">Inhale 4s • Hold 7s • Exhale 8s</div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: TechniqueSelector -->
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- @COMPONENT: BreathingVisualization -->
+            <div class="lg:col-span-2">
+                <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 min-h-[500px] flex flex-col">
+                    
+                    <!-- Session Info -->
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h3 class="text-xl font-semibold text-text-primary dark:text-white" data-bind="selectedTechnique.name">Deep Breathing</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm" data-bind="selectedTechnique.description">Simple inhale and exhale pattern</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-primary dark:text-blue-400" data-bind="sessionTimer">05:30</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-500">Session Time</div>
+                        </div>
+                    </div>
+
+                    <!-- Breathing Circle Visualization -->
+                    <div class="flex-1 flex items-center justify-center">
+                        <div class="relative">
+                            <!-- Outer Ring -->
+                            <div class="w-80 h-80 rounded-full border-4 border-gray-200 dark:border-gray-600 absolute inset-0 animate-pulse-gentle"></div>
+                            
+                            <!-- Main Breathing Circle -->
+                            <div id="breathing-circle" class="w-80 h-80 rounded-full bg-gradient-to-br from-primary via-secondary to-accent relative flex items-center justify-center animate-breathe-in">
+                                <!-- Inner glow effect -->
+                                <div class="w-60 h-60 rounded-full bg-white/20 dark:bg-white/10 backdrop-blur-sm flex items-center justify-center">
+                                    <div class="text-center">
+                                        <div id="breath-phase" class="text-2xl font-bold text-white mb-2" data-bind="currentPhase">Inhale</div>
+                                        <div id="breath-count" class="text-lg text-white/80" data-bind="phaseTimer">4</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Floating particles -->
+                                <div class="absolute inset-0 overflow-hidden rounded-full">
+                                    <div class="particle absolute w-2 h-2 bg-white/30 rounded-full animate-bounce" style="top: 20%; left: 30%; animation-delay: 0s;"></div>
+                                    <div class="particle absolute w-1 h-1 bg-white/40 rounded-full animate-bounce" style="top: 70%; right: 25%; animation-delay: 1s;"></div>
+                                    <div class="particle absolute w-1.5 h-1.5 bg-white/35 rounded-full animate-bounce" style="bottom: 30%; left: 20%; animation-delay: 2s;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="flex items-center justify-center space-x-6 mt-6">
+                        <button id="prev-btn" class="w-12 h-12 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full flex items-center justify-center transition-all duration-200"
+                                data-event="click:previousTechnique" data-implementation="Switch to previous breathing technique">
+                            <i class="fas fa-step-backward text-gray-600 dark:text-gray-300"></i>
+                        </button>
+                        
+                        <button id="play-pause-btn" class="w-16 h-16 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300"
+                                data-event="click:togglePlayPause" data-implementation="Start/stop breathing exercise">
+                            <i id="play-icon" class="fas fa-play text-xl"></i>
+                        </button>
+                        
+                        <button id="next-btn" class="w-12 h-12 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full flex items-center justify-center transition-all duration-200"
+                                data-event="click:nextTechnique" data-implementation="Switch to next breathing technique">
+                            <i class="fas fa-step-forward text-gray-600 dark:text-gray-300"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: BreathingVisualization -->
+
+            <!-- @COMPONENT: SessionStats -->
+            <div class="space-y-6">
+                
+                <!-- Current Session Stats -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                    <h4 class="font-semibold text-text-primary dark:text-white mb-4 flex items-center">
+                        <i class="fas fa-chart-line text-primary mr-2"></i>
+                        Current Session
+                    </h4>
+                    
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600 dark:text-gray-400">Cycles Completed</span>
+                            <span class="font-semibold text-text-primary dark:text-white" data-bind="completedCycles">12</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600 dark:text-gray-400">Current Cycle</span>
+                            <span class="font-semibold text-text-primary dark:text-white" data-bind="currentCycle">13 / 20</span>
+                        </div>
+                        
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-primary to-secondary h-2 rounded-full transition-all duration-300" style="width: 65%" data-bind="sessionProgress"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Settings -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                    <h4 class="font-semibold text-text-primary dark:text-white mb-4 flex items-center">
+                        <i class="fas fa-cog text-secondary mr-2"></i>
+                        Quick Settings
+                    </h4>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-gray-600 dark:text-gray-400 mb-2">Session Duration</label>
+                            <select class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-2 text-text-primary dark:text-white" data-mock="true">
+                                <option>5 minutes</option>
+                                <option selected>10 minutes</option>
+                                <option>15 minutes</option>
+                                <option>20 minutes</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm text-gray-600 dark:text-gray-400 mb-2">Background Sounds</label>
+                            <select class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-2 text-text-primary dark:text-white" data-mock="true">
+                                <option>None</option>
+                                <option selected>Ocean Waves</option>
+                                <option>Forest Sounds</option>
+                                <option>White Noise</option>
+                            </select>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600 dark:text-gray-400">Voice Guidance</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" checked class="sr-only peer" data-mock="true">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/30 dark:peer-focus:ring-primary/50 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weekly Progress -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                    <h4 class="font-semibold text-text-primary dark:text-white mb-4 flex items-center">
+                        <i class="fas fa-calendar-week text-accent mr-2"></i>
+                        This Week
+                    </h4>
+                    
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600 dark:text-gray-400">Total Sessions</span>
+                            <span class="font-semibold text-text-primary dark:text-white" data-bind="weekSessions">8</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600 dark:text-gray-400">Total Minutes</span>
+                            <span class="font-semibold text-text-primary dark:text-white" data-bind="weekMinutes">75</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600 dark:text-gray-400">Streak</span>
+                            <span class="font-semibold text-accent" data-bind="streak">4 days 🔥</span>
+                        </div>
+                        
+                        <!-- Weekly Chart -->
+                        <div class="mt-4">
+                            <div class="flex justify-between items-end h-20 space-x-1">
+                                <!-- @MAP: weekData.map(day => ( -->
+                                <div class="flex flex-col items-center">
+                                    <div class="w-6 bg-primary/20 rounded-t" style="height: 60%" data-mock="true"></div>
+                                    <span class="text-xs text-gray-500 mt-1">M</span>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div class="w-6 bg-primary/40 rounded-t" style="height: 80%" data-mock="true"></div>
+                                    <span class="text-xs text-gray-500 mt-1">T</span>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div class="w-6 bg-primary/60 rounded-t" style="height: 40%" data-mock="true"></div>
+                                    <span class="text-xs text-gray-500 mt-1">W</span>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div class="w-6 bg-primary/80 rounded-t" style="height: 90%" data-mock="true"></div>
+                                    <span class="text-xs text-gray-500 mt-1">T</span>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div class="w-6 bg-primary rounded-t" style="height: 100%" data-mock="true"></div>
+                                    <span class="text-xs text-gray-500 mt-1">F</span>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div class="w-6 bg-gray-200 dark:bg-gray-600 rounded-t" style="height: 20%" data-mock="true"></div>
+                                    <span class="text-xs text-gray-500 mt-1">S</span>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div class="w-6 bg-gray-200 dark:bg-gray-600 rounded-t" style="height: 20%" data-mock="true"></div>
+                                    <span class="text-xs text-gray-500 mt-1">S</span>
+                                </div>
+                                <!-- @END_MAP )) -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: SessionStats -->
+        </div>
+
+        <!-- @COMPONENT: TechniqueInstructions -->
+        <section class="mt-8">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                <h3 class="text-xl font-semibold text-text-primary dark:text-white mb-6 text-center">How It Works</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- @MAP: instructions.map(instruction => ( -->
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl font-bold text-white">1</span>
+                        </div>
+                        <h4 class="font-semibold text-text-primary dark:text-white mb-2">Get Comfortable</h4>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">Find a quiet space and sit comfortably with your back straight and shoulders relaxed.</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-r from-secondary to-accent rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl font-bold text-white">2</span>
+                        </div>
+                        <h4 class="font-semibold text-text-primary dark:text-white mb-2">Follow the Guide</h4>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">Watch the breathing circle and follow the visual cues along with the gentle audio guidance.</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-r from-accent to-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl font-bold text-white">3</span>
+                        </div>
+                        <h4 class="font-semibold text-text-primary dark:text-white mb-2">Stay Focused</h4>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">If your mind wanders, gently bring your attention back to your breath and the visual guide.</p>
+                    </div>
+                    <!-- @END_MAP )) -->
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: TechniqueInstructions -->
+    </main>
+
+    <style>
+        .font-inter {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            height: 16px;
+            width: 16px;
+            background: #4A90E2;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .slider::-moz-range-thumb {
+            height: 16px;
+            width: 16px;
+            background: #4A90E2;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .technique-card.active {
+            border-color: #4A90E2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+        
+        .particle {
+            animation-duration: 3s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+        }
+
+        /* @STATE: isPlaying:boolean = false */
+        /* @STATE: selectedTechnique:string = 'deep' */
+        /* @STATE: currentPhase:string = 'Inhale' */
+        /* @STATE: phaseTimer:number = 4 */
+        /* @STATE: sessionTimer:string = '05:30' */
+    </style>
+
+    <script>
+        // TODO: Implement business logic, API calls, and state management
+        (function() {
+            let isPlaying = false;
+            let selectedTechnique = 'deep';
+            let currentPhase = 'Inhale';
+            
+            const techniques = {
+                deep: { name: 'Deep Breathing', animation: 'animate-breathe-in', duration: 4000 },
+                box: { name: 'Box Breathing', animation: 'animate-breathe-box', duration: 16000 },
+                '478': { name: '4-7-8 Technique', animation: 'animate-breathe-478', duration: 19000 }
+            };
+            
+            // Play/Pause functionality
+            document.getElementById('play-pause-btn').addEventListener('click', function() {
+                isPlaying = !isPlaying;
+                const icon = document.getElementById('play-icon');
+                const circle = document.getElementById('breathing-circle');
+                
+                if (isPlaying) {
+                    icon.className = 'fas fa-pause text-xl';
+                    circle.style.animationPlayState = 'running';
+                } else {
+                    icon.className = 'fas fa-play text-xl';
+                    circle.style.animationPlayState = 'paused';
+                }
+            });
+            
+            // Technique selection
+            document.querySelectorAll('.technique-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    // Remove active class from all cards
+                    document.querySelectorAll('.technique-card').forEach(c => c.classList.remove('active'));
+                    // Add active class to clicked card
+                    this.classList.add('active');
+                    
+                    // Update selected technique
+                    selectedTechnique = this.dataset.technique;
+                    const circle = document.getElementById('breathing-circle');
+                    
+                    // Update animation
+                    circle.className = `w-80 h-80 rounded-full bg-gradient-to-br from-primary via-secondary to-accent relative flex items-center justify-center ${techniques[selectedTechnique].animation}`;
+                });
+            });
+            
+            // Volume control
+            document.querySelector('input[type="range"]').addEventListener('input', function() {
+                // TODO: Implement volume control for breathing sounds
+                console.log('Volume:', this.value);
+            });
+            
+            // Dark mode toggle
+            document.querySelector('button[data-event="click:toggleDarkMode"]').addEventListener('click', function() {
+                document.documentElement.classList.toggle('dark');
+                const icon = this.querySelector('i');
+                if (document.documentElement.classList.contains('dark')) {
+                    icon.className = 'fas fa-sun text-gray-300';
+                } else {
+                    icon.className = 'fas fa-moon text-gray-600';
+                }
+            });
+            
+            // Initialize
+            document.querySelector('.technique-card[data-technique="deep"]').classList.add('active');
+        })();
+    </script>
+</body>
+</html>

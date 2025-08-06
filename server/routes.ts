@@ -4,6 +4,15 @@ import { storage } from "./storage";
 import { sessionStatsSchema, userSettingsSchema } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Health check endpoint
+  app.get("/api/health", (req, res) => {
+    res.json({ 
+      status: "healthy", 
+      timestamp: new Date().toISOString(),
+      version: "1.0.0"
+    });
+  });
+
   // Get all breathing techniques
   app.get("/api/techniques", async (req, res) => {
     try {
