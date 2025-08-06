@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(210, 40%, 98%);
+  --foreground: hsl(222.2, 84%, 4.9%);
+  --muted: hsl(210, 40%, 96%);
+  --muted-foreground: hsl(215.4, 16.3%, 46.9%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(222.2, 84%, 4.9%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(222.2, 84%, 4.9%);
+  --border: hsl(214.3, 31.8%, 91.4%);
+  --input: hsl(214.3, 31.8%, 91.4%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(210, 40%, 98%);
+  --secondary: hsl(258, 64%, 67%);
+  --secondary-foreground: hsl(222.2, 84%, 4.9%);
+  --accent: hsl(150, 60%, 55%);
+  --accent-foreground: hsl(222.2, 84%, 4.9%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(210, 40%, 98%);
+  --ring: hsl(222.2, 84%, 4.9%);
+  --radius: 0.5rem;
+  --text-primary: hsl(218, 25%, 25%);
+  --dark-bg: hsl(220, 25%, 11%);
+}
+
+.dark {
+  --background: hsl(220, 25%, 11%);
+  --foreground: hsl(210, 40%, 98%);
+  --muted: hsl(217.2, 32.6%, 17.5%);
+  --muted-foreground: hsl(215, 20.2%, 65.1%);
+  --popover: hsl(224, 71.4%, 4.1%);
+  --popover-foreground: hsl(210, 40%, 98%);
+  --card: hsl(224, 71.4%, 4.1%);
+  --card-foreground: hsl(210, 40%, 98%);
+  --border: hsl(217.2, 32.6%, 17.5%);
+  --input: hsl(217.2, 32.6%, 17.5%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(222.2, 84%, 4.9%);
+  --secondary: hsl(258, 64%, 67%);
+  --secondary-foreground: hsl(210, 40%, 98%);
+  --accent: hsl(150, 60%, 55%);
+  --accent-foreground: hsl(222.2, 84%, 4.9%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(210, 40%, 98%);
+  --ring: hsl(212.7, 26.8%, 83.9%);
+  --text-primary: hsl(210, 40%, 98%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 min-h-screen text-foreground transition-colors duration-500;
+  }
+}
+
+@layer utilities {
+  .breathing-circle {
+    background: linear-gradient(135deg, hsl(207, 90%, 54%), hsl(258, 64%, 67%), hsl(150, 60%, 55%));
+  }
+
+  .breathing-deep {
+    animation: breatheDeep 4s ease-in-out infinite;
+  }
+
+  .breathing-box {
+    animation: breatheBox 16s ease-in-out infinite;
+  }
+
+  .breathing-478 {
+    animation: breathe478 19s ease-in-out infinite;
+  }
+
+  .pulse-gentle {
+    animation: pulseGentle 2s ease-in-out infinite;
+  }
+
+  .breathing-particle {
+    animation: float 3s ease-in-out infinite;
+  }
+}
+
+@keyframes breatheDeep {
+  0%, 100% { 
+    transform: scale(1); 
+    opacity: 0.8; 
+  }
+  50% { 
+    transform: scale(1.3); 
+    opacity: 1; 
+  }
+}
+
+@keyframes breatheBox {
+  0% { 
+    transform: scale(1); 
+    opacity: 0.8; 
+  }
+  25% { 
+    transform: scale(1.4); 
+    opacity: 1; 
+  }
+  50% { 
+    transform: scale(1.4); 
+    opacity: 1; 
+  }
+  75% { 
+    transform: scale(1); 
+    opacity: 0.8; 
+  }
+  100% { 
+    transform: scale(1); 
+    opacity: 0.8; 
+  }
+}
+
+@keyframes breathe478 {
+  0% { 
+    transform: scale(1); 
+    opacity: 0.8; 
+  }
+  21% { 
+    transform: scale(1.5); 
+    opacity: 1; 
+  }
+  58% { 
+    transform: scale(1.5); 
+    opacity: 1; 
+  }
+  100% { 
+    transform: scale(1); 
+    opacity: 0.8; 
+  }
+}
+
+@keyframes pulseGentle {
+  0%, 100% { 
+    opacity: 0.6; 
+  }
+  50% { 
+    opacity: 1; 
+  }
+}
+
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+  }
+  33% { 
+    transform: translateY(-10px) rotate(120deg); 
+  }
+  66% { 
+    transform: translateY(5px) rotate(240deg); 
+  }
+}
